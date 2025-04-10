@@ -1,4 +1,7 @@
 const express = require('express');
+
+const Ride = require ('../models/rideModel')
+
 const router = express.Router();
 
 
@@ -14,6 +17,7 @@ router.get('/:id', (req, res) => {
 
 //POST a new ride
 router.post('/', (req, res) => {
+    const {startingPoint, destination, date, time} = req.body
     res.json({mssg: 'POST a new ride'})
 })
 
