@@ -16,10 +16,18 @@ router.get('/:id', (req, res) => {
 })
 
 //POST a new ride
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
     const {startingPoint, destination, date, time} = req.body
-    res.json({mssg: 'POST a new ride'})
+
+    try {
+      const ride = await Ride.create({startingPoint, destination, date, time})
+      res.status(200).json(ride)
+    } catch (error) {
+      res.status(400).json({error: error.message})
+    }
 })
+
+
 
 //DELETE a ride
 router.delete('/:id', (req, res) => {
