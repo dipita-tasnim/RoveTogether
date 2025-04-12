@@ -1,0 +1,119 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #F1F5F9;
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.main-container {
+  display: flex;
+  height: 100%;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: #0F172A;
+  color: white;
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.sidebar-title {
+  font-size: 1.75rem;
+  font-weight: bold;
+  margin-top: 1rem; /* Adjust this to move the title closer to the top */
+  margin-bottom: 1.5rem; /* Increased space between title and the line */
+  color: white;
+  font-family: 'merriweather';
+  text-decoration: none; /* Ensures the title has no underline */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Light white thin line under the title */
+  padding-bottom: 1rem; /* Adds space between title and line */
+}
+
+
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 4rem;
+}
+
+.sidebar-link {
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.5rem;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  color: white;
+  font-weight: 500;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.sidebar-link:hover {
+  background-color: #334155;
+}
+
+/* .sidebar-link.active {
+  background-color: #1E293B;
+} */
+
+.content-area {
+  flex: 1;
+  padding: 2rem;
+  background-color: #F1F5F9;
+}
+
+.home-wrapper {
+  padding: 2rem;
+  background-color: #F1F5F9;
+  min-height: 100vh;
+}
+
+.home-card {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.home-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.home-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.home-subtext {
+  color: #6B7280;
+  font-size: 0.95rem;
+}
+
+.create-new-post-button {
+  background-color: #0F172A;
+  color: white;
+  padding: 0.6rem 1.5rem;
+  font-size: 0.95rem;
+  border-radius: 0.75rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.create-new-post-button:hover {
+  background-color: #334155;
+}
