@@ -25,11 +25,11 @@ const getRide = async (req, res) => {
 
 //create a new ride
 const createRide = async (req, res) => {
-    const {startingPoint, destination, date, time} = req.body
+    const {startingPoint, destination, date, time, availableSlots, preference} = req.body
 
     //add doc to db
     try {
-      const ride = await Ride.create({startingPoint, destination, date, time})
+      const ride = await Ride.create({startingPoint, destination, date, time, availableSlots, preference})
       res.status(200).json(ride)
     } catch (error) {
       res.status(400).json({error: error.message})
