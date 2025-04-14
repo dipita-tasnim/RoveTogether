@@ -47,6 +47,23 @@ export default function Home() {
         </div>
       </div>
 
+      {/* Search Bar Section */}
+      <div className="search-bar-section">
+        <input type="text" className="search-field" placeholder="From" />
+        <input type="text" className="search-field" placeholder="To" />
+        <input type="date" className="search-field" />
+        <input type="time" className="search-field" />
+        <select className="search-field">
+          <option value="">Preference</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Both">Male, Female</option>
+        </select>
+        <button className="search-btn">Search</button>
+      </div>
+
+
+
       {/* Ride listing now outside of the intro box */}
       <div className="ride-list">
         {rides && rides.map((ride) => (
