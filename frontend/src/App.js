@@ -35,6 +35,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Sidebar from './components/Sidebar';
 import RideForm from './components/RideForm';
+import MyRides from './pages/MyRides';
 
 import './index.css';
 
@@ -49,6 +50,7 @@ function App() {
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/create" element={<RideForm />} />
+                <Route path="/myrides" element={<MyRides />} />
                 {/* add more routes here like /my-rides, /profile */}
               </Routes>
             </div>

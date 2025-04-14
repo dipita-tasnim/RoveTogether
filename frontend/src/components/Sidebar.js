@@ -1,5 +1,3 @@
-// File: components/Sidebar.js
-
 import { Link } from "react-router-dom";
 
 const Sidebar = () => {
@@ -11,9 +9,10 @@ const Sidebar = () => {
         </Link>
        
         <nav className="sidebar-nav">
-          <Link to="/" className="sidebar-link">My Rides</Link>
-          <Link to="/my-rides" className="sidebar-link">Profile</Link>
-          <Link to="/profile" className="sidebar-link">Logout</Link>
+          <Link to="/" className="sidebar-link">Home</Link>
+          <Link to="/myrides" className="sidebar-link">My Rides</Link>
+          <Link to="/profile" className="sidebar-link">Profile</Link>
+          <Link to="/logout" className="sidebar-link">Logout</Link>
         </nav>
       </div>
     </aside>
