@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema
 
@@ -12,13 +12,22 @@ const rideSchema = new Schema({
         required: true
     },
     date: {
-        type: Date,
+        type: String,
         required: true
     },
     time: {
         type: String,
         required: true
+    },
+    availableSlots: {
+        type: String,
+        required: true
+    },
+    preference: {
+        type: String,
+        required: true
     }
+
 }, {timestamps: true}) //timestamps should be included as second argumnt for taking the updated data by time
     // userId: {
     //     type: Schema.Types.ObjectId,
