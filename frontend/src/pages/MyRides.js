@@ -6,10 +6,17 @@ const MyRides = () => {
 
   useEffect(() => {
     const fetchRides = async () => {
+      const token = localStorage.getItem('token');
+  
       try {
-        const response = await fetch('/api/rides');
+        const response = await fetch('/api/rides/myrides', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+  
         const json = await response.json();
-
+  
         if (response.ok) {
           setRides(json);
         } else {
@@ -19,9 +26,10 @@ const MyRides = () => {
         setError("Failed to fetch rides");
       }
     };
-
+  
     fetchRides();
   }, []);
+  
 
   return (
     <div className="my-rides">

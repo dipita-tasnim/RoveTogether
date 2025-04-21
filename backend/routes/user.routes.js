@@ -4,18 +4,16 @@ const { body } = require("express-validator");
 const userController = require('../controllers/user.controller');
 const authMiddleware = require('../middlewares/auth.middleware');
 
-
-//register routes model 
+// ✅ Keep only this one
 router.post('/register', [
     body('email').isEmail().withMessage('Invalid Email'),
-    body('fullname.firstname').isLength({ min: 3 }).withMessage('First name must be at least 3 character'),
+    body('firstname').isLength({ min: 3 }).withMessage('First name must be at least 3 character'),
     body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 character'),   
 ],
     userController.registerUser
-)
+);
 
-//login routes model
-
+// login route
 router.post(
     '/login',
     [ 
@@ -25,10 +23,10 @@ router.post(
     userController.loginUser
 );
 
-//profile routes model
+// profile route
 router.get('/profile', authMiddleware.authUser, userController.getUserProfile);
-//logout
-router.get('/logout', authMiddleware.authUser, userController.logoutUser);
 
+// logout route
+router.get('/logout', authMiddleware.authUser, userController.logoutUser);
 
 module.exports = router;

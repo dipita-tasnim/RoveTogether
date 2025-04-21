@@ -26,7 +26,12 @@ const rideSchema = new Schema({
     preference: {
         type: String,
         required: true
-    }
+    },
+    user_id: { // renamed from createdBy to match controller
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+      }
 
 }, {timestamps: true}) //timestamps should be included as second argumnt for taking the updated data by time
     // userId: {
