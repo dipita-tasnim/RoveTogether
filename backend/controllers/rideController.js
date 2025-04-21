@@ -1,9 +1,9 @@
-const Ride = require ('../models/rideModel')
+const Ride = require('../models/rideModel')
 const mongoose = require('mongoose')
 
 //get all rides
 const getRides = async (req, res) => {
-    const rides = await Ride.find({}).sort({createdAt: -1}) //descsending order
+    const rides = await Ride.find({}).sort({ createdAt: -1 }) //descsending order
 
     res.status(200).json(rides)
 }
@@ -12,27 +12,51 @@ const getRides = async (req, res) => {
 const getRide = async (req, res) => {
     const { id } = req.params
     if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(404).json({error: 'No such ride'})
+        return res.status(404).json({ error: 'No such ride' })
     }
     const ride = await Ride.findById(id)
 
     if (!ride) {
-        return res.status(404).json({error: 'No such ride'})
+        return res.status(404).json({ error: 'No such ride' })
     }
 
     res.status(200).json(ride)
 }
 
+
+// Get rides created by the logged-in user
+const getMyRides = async (req, res) => {
+    try {
+      const userId = req.user._id;
+      const rides = await Ride.find({ user_id: userId }).sort({ createdAt: -1 });
+      res.status(200).json(rides);
+    } catch (error) {
+      res.status(500).json({ error: 'Failed to fetch user rides' });
+    }
+  };
+  
+  
+
+
 //create a new ride
 const createRide = async (req, res) => {
-    const {startingPoint, destination, date, time, availableSlots, preference} = req.body
+    const { startingPoint, destination, date, time, availableSlots, preference } = req.body
 
     //add doc to db
     try {
-      const ride = await Ride.create({startingPoint, destination, date, time, availableSlots, preference})
-      res.status(200).json(ride)
+        const ride = await Ride.create({
+            startingPoint,
+            destination,
+            date,
+            time,
+            availableSlots,
+            preference,
+            user_id: req.user._id // 👈 store who created it
+        });
+
+        res.status(200).json(ride)
     } catch (error) {
-      res.status(400).json({error: error.message})
+        res.status(400).json({ error: error.message })
     }
 }
 
@@ -41,13 +65,13 @@ const deleteRide = async (req, res) => {
     const { id } = req.params
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(404).json({error: 'No such ride'})
+        return res.status(404).json({ error: 'No such ride' })
     }
 
-    const ride = await Ride.findOneAndDelete({_id: id})
+    const ride = await Ride.findOneAndDelete({ _id: id })
 
     if (!ride) {
-        return res.status(404).json({error: 'No such ride'})
+        return res.status(404).json({ error: 'No such ride' })
     }
 
     res.status(200).json(ride)
@@ -58,15 +82,15 @@ const updateRide = async (req, res) => {
     const { id } = req.params
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(404).json({error: 'No such ride'})
-    }    
+        return res.status(404).json({ error: 'No such ride' })
+    }
 
-    const ride = await Ride.findOneAndUpdate({_id: id}, {
+    const ride = await Ride.findOneAndUpdate({ _id: id }, {
         ...req.body
     })
 
     if (!ride) {
-        return res.status(404).json({error: 'No such ride'})        
+        return res.status(404).json({ error: 'No such ride' })
     }
     res.status(200).json(ride)
 }
@@ -77,6 +101,7 @@ module.exports = {
     getRide,
     createRide,
     deleteRide,
-    updateRide
+    updateRide,
+    getMyRides
 
 }

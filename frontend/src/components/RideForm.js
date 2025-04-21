@@ -19,14 +19,15 @@ const RideForm = () => {
         e.preventDefault()
 
         const ride = {startingPoint, destination, date, time, availableSlots, preference}
-
+        const token = localStorage.getItem("token");
         const response = await fetch('/api/rides', {
             method: 'POST',
             body: JSON.stringify(ride),
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             }
-        })
+        });
         const json = await response.json()
 
         if (!response.ok) {
@@ -41,7 +42,7 @@ const RideForm = () => {
             setPreference('')
             setError(null)
             console.log('New Ride added', json)
-            navigate('/')
+            navigate('/home')
         }
     }
 

@@ -10,9 +10,9 @@
 
 
 import { useEffect, useState } from "react";
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 
-//components
+// components
 import RideDetails from "../components/RideDetails";
 
 export default function Home() {
@@ -20,13 +20,28 @@ export default function Home() {
 
   useEffect(() => {
     const fetchRides = async () => {
-      const resposnse = await fetch("/api/rides");
-      const json = await resposnse.json();
+      const token = localStorage.getItem("token"); // assuming you're storing token in localStorage
 
-      if (resposnse.ok) {
-        setRides(json);
+      try {
+        const response = await fetch("/api/rides", {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        const json = await response.json();
+
+        if (response.ok) {
+          setRides(json);
+        } else {
+          console.error("Failed to fetch rides:", json.message);
+        }
+      } catch (err) {
+        console.error("Fetch error:", err);
       }
     };
+
     fetchRides();
   }, []);
 
@@ -61,8 +76,6 @@ export default function Home() {
         </select>
         <button className="search-btn">Search</button>
       </div>
-
-
 
       {/* Ride listing now outside of the intro box */}
       <div className="ride-list">
