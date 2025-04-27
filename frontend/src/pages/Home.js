@@ -72,7 +72,7 @@ export default function Home() {
           <option value="">Preference</option>
           <option value="Male">Male</option>
           <option value="Female">Female</option>
-          <option value="Both">Male, Female</option>
+          <option value="any">Male, Female</option>
         </select>
         <button className="search-btn">Search</button>
       </div>
