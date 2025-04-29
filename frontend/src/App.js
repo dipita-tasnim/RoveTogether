@@ -23,7 +23,8 @@ function AppLayout() {
   return (
     <div className="main-container">
       {!shouldHideSidebar && <Sidebar />}
-      <div className="content-area">
+      <div className={`content-area ${!shouldHideSidebar ? 'with-sidebar' : ''}`}>
+
         <div className="pages">
           <Routes>
             <Route path="/" element={<Navigate to="/welcome" />} />

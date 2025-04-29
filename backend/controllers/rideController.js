@@ -1,12 +1,20 @@
 const Ride = require('../models/rideModel')
+const User = require('../models/user.model'); 
 const mongoose = require('mongoose')
 
-//get all rides
+// get all rides
 const getRides = async (req, res) => {
-    const rides = await Ride.find({}).sort({ createdAt: -1 }) //descsending order
-
-    res.status(200).json(rides)
-}
+    try {
+      const rides = await Ride.find({})
+        .populate('user_id', 'fullname.firstname fullname.lastname email') // populate user details (only firstname and email)
+        .sort({ createdAt: -1 }); // sort by newest first
+  
+      res.status(200).json(rides);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch rides", error: error.message });
+    }
+  };
+  
 
 //get a single ride
 const getRide = async (req, res) => {
@@ -105,3 +113,4 @@ module.exports = {
     getMyRides
 
 }
+

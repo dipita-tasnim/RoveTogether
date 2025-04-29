@@ -6,17 +6,17 @@ const LandingPage = () => {
 
   return (
     <div className="landing-page">
-      {/* 👇 Top-right login/signup buttons */}
+      {/*  Top-right login/signup buttons */}
       <div className="top-buttons">
         <button onClick={() => navigate('/login')}>Login</button>
         <button onClick={() => navigate('/registration')}>Sign Up</button>
       </div>
 
       <h1>Welcome to RoveTogether</h1>
-      <p><p>Your companion for smarter, safer, and more affordable travel.</p></p>
+      <p>Your companion for smarter, safer, and more affordable travel.</p>
      
       
-    {/* 🌟 New Feature Section */}
+    {/*  New Feature Section */}
     <div className="features-section">
         <h2>What RoveTogether can do?</h2>
         <ul className="features-list">
