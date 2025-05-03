@@ -104,13 +104,71 @@ const updateRide = async (req, res) => {
 }
 
 
+const updateRideStatus = async (req, res) => {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    if (!["open", "closed"].includes(status)) {
+        return res.status(400).json({ error: "Invalid status" });
+    }
+
+    try {
+        const ride = await Ride.findOneAndUpdate(
+            { _id: id, user_id: req.user._id },
+            { status },
+            { new: true }
+        );
+
+        if (!ride) {
+            return res.status(404).json({ error: "Ride not found or unauthorized" });
+        }
+
+        res.status(200).json(ride);
+    } catch (error) {
+        res.status(500).json({ error: "Server error" });
+    }
+};
+
+
+
+const joinRide = async (req, res) => {
+    const { id } = req.params;
+  
+    try {
+      const ride = await Ride.findById(id);
+  
+      if (!ride) {
+        return res.status(404).json({ error: 'Ride not found' });
+      }
+  
+      if (ride.joinedUserId) {
+        return res.status(400).json({ error: 'Ride already joined' });
+      }
+  
+      ride.joinedUserId = req.user._id;
+      await ride.save();
+  
+      const populatedRide = await ride.populate('joinedUserId', 'fullname.email');
+  
+      res.status(200).json(populatedRide);
+    } catch (err) {
+      console.error('Join Ride Error:', err);
+      res.status(500).json({ error: 'Failed to join ride' });
+    }
+  };
+  
+
+
 module.exports = {
     getRides,
     getRide,
     createRide,
     deleteRide,
     updateRide,
-    getMyRides
+    getMyRides,
+    updateRideStatus,
+    joinRide
+
 
 }
 

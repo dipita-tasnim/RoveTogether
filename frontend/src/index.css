@@ -1,3 +1,9 @@
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+
 body {
   margin: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -19,18 +25,24 @@ body {
   width: 200px;
   background-color: #0F172A;
   color: white;
-  padding: 2rem 1.5rem;
+  padding: 0;
+
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
 
-  position: fixed;           /* Make it fixed */
-  
-  height: 100vh; /* full height */             /* Full height of the viewport */
+  position: fixed;
+  height: 100vh;
   top: 0;
   left: 0;
 }
+
+.sidebar-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* IMPORTANT */
+  padding: 2rem 1.5rem;
+}
+
 
 
 .sidebar-title {
@@ -73,6 +85,16 @@ body {
 .sidebar-link.active {
   background-color: #1E293B;
 }
+
+.sidebar-user {
+  margin-top: auto; /* Pushes it to the bottom */
+  padding-top: 2rem;
+  font-weight: bold;
+  font-size: 1rem;
+  color: #cbd5e1;
+  gap: 0.5rem; /* spacing between emoji and name */
+}
+
 
 .content-area {
   flex: 1;
@@ -244,6 +266,26 @@ body {
   background-color: #E5E7EB;
 }
 
+.join-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.join-icon {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.join-icon:hover {
+  transform: scale(1.2);
+}
+
+
+
 .join-button {
   background-color: #0F172A;
   color: white;
@@ -265,6 +307,12 @@ body {
   cursor: not-allowed;
 }
 
+
+/* When the Join Ride button is clicked (joined state) */
+.join-button.joined {
+  background-color: #4CAF50; /* Green background when joined */
+  color: white;              /* Keep text color white */
+}
 
 .status-buttons {
   margin-top: 1rem;
@@ -588,3 +636,39 @@ body, html, #root {
   transform: translateY(-5px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
+
+
+.confirmation-buttons {
+  margin-top: 20px;
+}
+
+.confirm-btn,
+.cancel-btn {
+  padding: 8px 16px;
+  margin-right: 10px;
+  border: none;
+  cursor: pointer;
+  color: white;
+  background-color: grey;
+  transition: background-color 0.3s;
+}
+
+.confirm-btn.active {
+  background-color: green;
+}
+
+.cancel-btn.active {
+  background-color: red;
+}
+
+.confirm-btn:disabled,
+.cancel-btn:disabled {
+  opacity: 0.7;
+  
+}
+
+.confirm-btn:hover:not(.active):not(:disabled),
+.cancel-btn:hover:not(.active):not(:disabled) {
+  background-color: #a9a9a9; /* A lighter grey on hover */
+}
+

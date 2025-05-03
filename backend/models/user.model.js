@@ -28,7 +28,13 @@ const userSchema = new mongoose.Schema({
     },
     socketId: {
         type: String,
+    },
+    joinedUserId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        default: null
     }
+      
 })
 //password generation and encryption process
 userSchema.methods.generateAuthToken = function () {

@@ -1,40 +1,31 @@
 const express = require('express');
 const {
-    getRides,
-    getRide,
-    createRide,
-    deleteRide,
-    updateRide,
-    getMyRides
+  getRides,
+  getRide,
+  createRide,
+  deleteRide,
+  updateRide,
+  getMyRides,
+  updateRideStatus //  Import this from controller
+} = require('../controllers/rideController');
 
-} = require('../controllers/rideController')
+const { authUser } = require('../middlewares/auth.middleware');
 
-const { authUser } = require('../middlewares/auth.middleware'); //  if you have it
+const { joinRide } = require('../controllers/rideController');
 
 const router = express.Router();
 
-router.use(authUser); // Correct usage
+router.use(authUser); //  Middleware for all routes
 
-//GET all rides
-router.get('/', getRides)
-
-//GET a single ride
+//  Routes
+router.get('/', getRides);
 router.get('/myrides', getMyRides);
+router.get('/:id', getRide);
+router.post('/', createRide);
+router.delete('/:id', deleteRide);
+router.patch('/:id', updateRide);
+router.put('/:id/status', updateRideStatus); // This is your new route for status update
+router.put('/:id/join', joinRide);
 
 
-router.get('/:id', getRide)
-
-//POST a new ride
-router.post('/', createRide)
-
-
-//DELETE a ride
-router.delete('/:id', deleteRide)
-
-//UPDATE a ride
-router.patch('/:id', updateRide)
-
-// New route for logged-in user's rides
-router.get('/myrides', getMyRides);
-
-module.exports = router
+module.exports = router;

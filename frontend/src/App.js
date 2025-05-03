@@ -10,7 +10,7 @@ import RegForm from './components/RegForm';
 import LandingPage from './components/LandingPage';
 import MyProfile from './pages/MyProfile';
 import Logout from './components/Logout';
-
+import RideConfirmation from './components/RideConfirmation';
 import './index.css';
 
 function AppLayout() {
@@ -42,6 +42,7 @@ function AppLayout() {
             <Route path="/myrides" element={<MyRides />} />
             <Route path="/profile" element={<MyProfile />} />
             <Route path="/logout" element={<Logout />} />
+            <Route path="/ride-confirmation" element={<RideConfirmation />} />
             <Route path="*" element={<div>404 Page Not Found</div>} />
           </Routes>
         </div>

@@ -27,11 +27,18 @@ const rideSchema = new Schema({
         type: String,
         required: true
     },
+    status: {
+        type: String,
+        enum: ["open", "closed"],
+        default: "closed"
+      },
+      
     user_id: { // renamed from createdBy to match controller
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true
       }
+      
 
 }, {timestamps: true}) //timestamps should be included as second argumnt for taking the updated data by time
     // userId: {
