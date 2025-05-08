@@ -1,29 +1,37 @@
-// const RideDetails = ({ride}) => {
-//     return (
-//         <div className="ride-details">
-//             <p className="ride-startingPoint"><strong>From:</strong> {ride.startingPoint}</p>
-//             <p className="ride-destination"><strong>To:</strong> {ride.destination}</p>
-//             <p className="ride-date"><strong>Date:</strong> {ride.date}</p>
-//             <p className="ride-time"><strong>Time:</strong> {ride.time}</p>
-//         </div>
-//     )
-// }   
-
-// export default RideDetails
-
-
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const RideDetails = ({ ride }) => {
-  const [activeStatus, setActiveStatus] = useState("open"); // "" | "open" | "closed"
+  const isOpen = ride.status === "open";
+  const navigate = useNavigate();
+  const joinedUsersKey = `joinedUsers_${ride._id}`;
+  const [isJoined, setIsJoined] = useState(false);
 
-  const handleOpenClick = () => {
-    setActiveStatus("open");
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+    
+    const user = JSON.parse(atob(token.split(".")[1]));
+    const joinedUsers = JSON.parse(localStorage.getItem(joinedUsersKey)) || [];
+    setIsJoined(joinedUsers.includes(user._id));
+  }, [joinedUsersKey]);
+
+  const toggleJoin = () => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+    
+    const user = JSON.parse(atob(token.split(".")[1]));
+    const existingJoined = JSON.parse(localStorage.getItem(joinedUsersKey)) || [];
+    const updatedJoined = isJoined 
+      ? existingJoined.filter((id) => id !== user._id)
+      : [...new Set([...existingJoined, user._id])];
+    
+    setIsJoined(!isJoined);
+    localStorage.setItem(joinedUsersKey, JSON.stringify(updatedJoined));
   };
-  
-  const handleClosedClick = () => {
-    setActiveStatus("closed");
+
+  const handleProfileClick = () => {
+    navigate(`/ride-confirmation?rideId=${ride._id}`);
   };
 
   return (
@@ -62,33 +70,28 @@ const RideDetails = ({ ride }) => {
         </div>
         <div className="ride-thin-divider" />
 
-        <button
-        className="join-button"
-        disabled={activeStatus !== "open"}
-      >
-        Join Ride
-      </button>
-      </div>
+        <div className="join-section">
+          <button
+            className="join-icon"
+            onClick={handleProfileClick}
+            title="View Rider Profile"
+          >
+             👥
+          </button>
 
-      <div className="status-buttons">
-      <button
-        className={`status-button ${activeStatus === "open" ? "active-open" : ""}`}
-        onClick={handleOpenClick}
-      >
-        Open
-      </button>
-      <button
-        className={`status-button ${activeStatus === "closed" ? "active-closed" : ""}`}
-        onClick={handleClosedClick}
-      >
-        Closed
-      </button>
-    </div>
+          <button
+            className={`join-button ${isJoined ? "joined" : ""}`}
+            disabled={!isOpen}
+            onClick={toggleJoin}
+          >
+            {isJoined ? "Joined" : "Join Ride"}
+          </button>
+        </div>
       </div>
-    );
-  };
+    </div>
+  );
+};
 
 export default RideDetails;
 
-  
-  
+

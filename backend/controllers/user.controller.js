@@ -33,7 +33,15 @@ module.exports.registerUser = async (req, res, next) => {
         const token = user.generateAuthToken();
 
         // Return token + user
-        res.status(201).json({ token, user });
+        res.status(201).json({
+            token,
+            user: {
+                _id: user._id,
+                email: user.email,
+                fullname: user.fullname, // or extract firstname: user.fullname.firstname if you want directly
+            }
+        });
+
     } catch (err) {
         console.error("Error in registration:", err);
 
@@ -67,7 +75,15 @@ module.exports.loginUser = async (req, res) => {
         }
 
         const token = user.generateAuthToken();
-        res.status(200).json({ token, user });
+        res.status(201).json({
+            token,
+            user: {
+                _id: user._id,
+                email: user.email,
+                fullname: user.fullname, // or extract firstname: user.fullname.firstname if you want directly
+            }
+        });
+
     } catch (err) {
         console.error("Login Error:", err);
         return res.status(500).json({ message: "Login failed" });
@@ -105,6 +121,32 @@ exports.getAllUsers = async (req, res) => {
     }
 };
 
+// user.controller.js
+
+// Fetch user by ID (for profile viewing)
+module.exports.getUserById = async (req, res) => {
+    try {
+      const userId = req.params.id;  // Get the user ID from the URL parameter
+  
+      // Check if the user ID is valid
+      if (!mongoose.Types.ObjectId.isValid(userId)) {
+        return res.status(400).json({ message: "Invalid user ID" });
+      }
+  
+      // Find the user by ID, excluding the password field for security
+      const user = await userModel.findById(userId).select("-password");
+  
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+  
+      res.status(200).json(user);  // Return the user data
+    } catch (err) {
+      console.error("Error fetching user by ID:", err);
+      res.status(500).json({ message: "Server error, please try again later." });
+    }
+  };
+  
 
 //Delete users [with all his rides also]
 

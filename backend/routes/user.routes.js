@@ -30,6 +30,9 @@ router.get('/', authMiddleware.authUser, userController.getAllUsers);
 // profile route
 router.get('/profile', authMiddleware.authUser, userController.getUserProfile);
 
+// Fetch user by ID
+router.get('/:id', authMiddleware.authUser, userController.getUserById);
+
 // logout route
 router.get('/logout', authMiddleware.authUser, userController.logoutUser);
 

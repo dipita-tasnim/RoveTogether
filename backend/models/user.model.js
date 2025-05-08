@@ -28,11 +28,17 @@ const userSchema = new mongoose.Schema({
     },
     socketId: {
         type: String,
+    },
+    joinedUserId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        default: null
     }
+      
 })
 //password generation and encryption process
 userSchema.methods.generateAuthToken = function () {
-    const token = jwt.sign({ _id: this._id }, process.env.JWT_SECRET, { expiresIn: '24h' });
+    const token = jwt.sign({ _id: this._id }, process.env.JWT_SECRET, { expiresIn: '30d' });
     return token;
 }
 userSchema.methods.comparePassword = async function (password) {

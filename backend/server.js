@@ -10,10 +10,7 @@ app.use((req, res, next) => {
     next()
 })
 
-//routes
-// app.get('/', (req, res) => {    [[NO NEED FROM EXPRESS ROUTER & API ROUTES PART]]
-//     res.json({mssg: 'Welcome to the app'})
-// })
+
 
 //routes
 app.use('/api/rides', rideRoutes);
