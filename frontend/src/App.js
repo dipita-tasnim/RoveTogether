@@ -7,10 +7,10 @@ import RideForm from './components/RideForm';
 import MyRides from './pages/MyRides';
 import LoginForm from './components/LoginForm';
 import RegForm from './components/RegForm';
-import LandingPage from './components/LandingPage';
+import LandingPage from './pages/LandingPage';
 import MyProfile from './pages/MyProfile';
 import Logout from './components/Logout';
-import RideConfirmation from './components/RideConfirmation';
+import RideConfirmation from './pages/RideConfirmation';
 import './index.css';
 
 function AppLayout() {

@@ -31,19 +31,23 @@ const rideSchema = new Schema({
         type: String,
         enum: ["open", "closed"],
         default: "closed"
-      },
-      
+    },
+
     user_id: { // renamed from createdBy to match controller
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true
-      }
-      
+    },
 
-}, {timestamps: true}) //timestamps should be included as second argumnt for taking the updated data by time
-    // userId: {
-    //     type: Schema.Types.ObjectId,
-    //     ref: 'User',
+    joinedUserIds: [
+        {
+            user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+            status: { type: String, enum: ['pending', 'confirmed', 'cancelled'], default: 'pending' }
+        }
+    ],
+
+}, { timestamps: true }) //timestamps should be included as second argumnt for taking the updated data by time
+
 
 module.exports = mongoose.model('Ride', rideSchema)
 

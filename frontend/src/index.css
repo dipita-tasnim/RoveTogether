@@ -22,7 +22,7 @@ body {
 }
 
 .sidebar {
-  width: 200px;
+  width: 240px;
   background-color: #0F172A;
   color: white;
   padding: 0;
@@ -340,6 +340,15 @@ body {
 .status-button.active-closed {
   background-color: #ef4444; /* red */
   color: white;
+}
+
+.view-details-button {
+  color: #2563eb; /* blue-600 */
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  text-decoration: underline;
 }
 
 /* form */
@@ -670,5 +679,138 @@ body, html, #root {
 .confirm-btn:hover:not(.active):not(:disabled),
 .cancel-btn:hover:not(.active):not(:disabled) {
   background-color: #a9a9a9; /* A lighter grey on hover */
+}
+
+/* Ride Confirmation Page Styles */
+.user-profile {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: white;
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.user-profile h2 {
+  color: #0F172A;
+  font-size: 1.75rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #E5E7EB;
+}
+
+.user-profile h3 {
+  color: #334155;
+  font-size: 1.25rem;
+  margin: 1.5rem 0 1rem;
+}
+
+.user-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.user-card {
+  background-color: #F8FAFC;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  border: 1px solid #E5E7EB;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.user-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.user-card p {
+  margin: 0.5rem 0;
+  color: #475569;
+}
+
+/* Specific styles for ride owner's card */
+.user-card:has(.owner-tag) {
+  padding-top: 1.5rem;
+}
+
+.user-card:has(.owner-tag) .owner-tag {
+  margin-bottom: 1.5rem;
+}
+
+.user-card:has(.owner-tag) p {
+  margin: 0.25rem 0;
+}
+
+.user-card strong {
+  color: #334155;
+  font-weight: 600;
+}
+
+.owner-tag {
+  display: inline-block;
+  background-color: #0F172A;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.875rem;
+}
+
+.confirmation-buttons {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.confirm-btn,
+.cancel-btn {
+  flex: 1;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background-color: #9CA3AF;
+  color: white;
+}
+
+.confirm-btn.active {
+  background-color: #059669;
+}
+
+.cancel-btn.active {
+  background-color: #DC2626;
+}
+
+/* Status styles */
+.user-card p:last-of-type {
+  margin-top: 0.75rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  display: inline-block;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.user-card p:last-of-type strong {
+  margin-right: 0.5rem;
+}
+
+/* Status colors */
+.user-card p:last-of-type:contains('pending') {
+  background-color: #FEF3C7;
+  color: #92400E;
+}
+
+.user-card p:last-of-type:contains('confirmed') {
+  background-color: #D1FAE5;
+  color: #065F46;
+}
+
+.user-card p:last-of-type:contains('cancelled') {
+  background-color: #FEE2E2;
+  color: #991B1B;
 }
 

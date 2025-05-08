@@ -6,12 +6,14 @@ const {
   deleteRide,
   updateRide,
   getMyRides,
-  updateRideStatus //  Import this from controller
+  updateRideStatus, //  Import this from controller
+  joinRide,
+  updateJoinedUserStatus
 } = require('../controllers/rideController');
 
 const { authUser } = require('../middlewares/auth.middleware');
 
-const { joinRide } = require('../controllers/rideController');
+
 
 const router = express.Router();
 
@@ -25,7 +27,8 @@ router.post('/', createRide);
 router.delete('/:id', deleteRide);
 router.patch('/:id', updateRide);
 router.put('/:id/status', updateRideStatus); // This is your new route for status update
-router.put('/:id/join', joinRide);
+router.put('/:id/join', authUser, joinRide);
+router.put('/:id/user/:userId/status', authUser, updateJoinedUserStatus);
 
 
 module.exports = router;
