@@ -5,12 +5,86 @@ const mongoose = require('mongoose');
 // Get all rides
 const getRides = async (req, res) => {
   try {
-    const rides = await Ride.find({})
+    const { from, to, date, time, preference } = req.query;
+    const query = {};
+
+    // Log the incoming search parameters
+    console.log('Raw search params:', { from, to, date, time, preference });
+
+    // Use regex for text-based fields
+    if (from) query.startingPoint = { $regex: from, $options: 'i' };
+    if (to) query.destination = { $regex: to, $options: 'i' };
+    
+    // Handle preference with special case for "Both"
+    if (preference) {
+      if (preference === "Both") {
+        // Search for either "Both" or "Male, Female"
+        query.preference = { 
+          $in: [
+            { $regex: "Both", $options: 'i' },
+            { $regex: "Male, Female", $options: 'i' }
+          ]
+        };
+      } else {
+        // For Male or Female, use exact case-insensitive match
+        query.preference = { $regex: `^${preference}$`, $options: 'i' };
+      }
+      console.log('Preference being searched:', preference);
+    }
+
+    // Handle date format variations
+    if (date) {
+      const dateObj = new Date(date);
+      const day = String(dateObj.getDate()).padStart(2, '0');
+      const month = dateObj.toLocaleString('en-US', { month: 'long' });
+      
+      // Create a regex pattern that matches the day and month but is flexible with the year
+      const datePattern = new RegExp(`^${day} ${month}, \\d{4}$`, 'i');
+      query.date = datePattern;
+      
+      console.log('Date pattern being searched:', datePattern);
+    }
+
+    // Handle time format variations
+    if (time) {
+      // Use direct matching for time since it's already in the correct format
+      query.time = time;
+      console.log('Time being searched:', time);
+    }
+
+    // Log the constructed query
+    console.log('MongoDB query:', JSON.stringify(query, null, 2));
+
+    // First, get all rides to see what's in the database
+    const allRides = await Ride.find({})
       .populate('user_id', 'fullname.firstname fullname.lastname email')
       .sort({ createdAt: -1 });
 
+    console.log('Sample of rides in database:', allRides.slice(0, 3).map(ride => ({
+      date: ride.date,
+      time: ride.time,
+      from: ride.startingPoint,
+      to: ride.destination,
+      preference: ride.preference
+    })));
+
+    // Then get the filtered rides
+    const rides = await Ride.find(query)
+      .populate('user_id', 'fullname.firstname fullname.lastname email')
+      .sort({ createdAt: -1 });
+
+    // Log the search results
+    console.log('Search results:', rides.map(ride => ({
+      date: ride.date,
+      time: ride.time,
+      from: ride.startingPoint,
+      to: ride.destination,
+      preference: ride.preference
+    })));
+
     res.status(200).json(rides);
   } catch (error) {
+    console.error('Search error:', error);
     res.status(500).json({ message: 'Failed to fetch rides' });
   }
 };
