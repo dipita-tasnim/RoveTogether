@@ -1,38 +1,40 @@
-const express = require('express')
+const express = require('express');
 const {
-  getRides,
-  getRide,
-  createRide,
-  deleteRide,
-  updateRide,
-  getMyRides,
-  searchRides     // ← import it!
+    getRides,
+    getRide,
+    createRide,
+    deleteRide,
+    updateRide,
+    getMyRides
+
 } = require('../controllers/rideController')
 
-const { authUser } = require('../middlewares/auth.middleware')
+const { authUser } = require('../middlewares/auth.middleware'); //  if you have it
 
-const router = express.Router()
-router.use(authUser)
+const router = express.Router();
 
-// 1. Search endpoint (must come before the “/:id” rule)
-router.get('/search', searchRides)
+router.use(authUser); // Correct usage
 
-// 2. List all rides
+//GET all rides
 router.get('/', getRides)
 
-// 3. Get current user’s rides
-router.get('/myrides', getMyRides)
+//GET a single ride
+router.get('/myrides', getMyRides);
 
-// 4. Get one ride by ID
+
 router.get('/:id', getRide)
 
-// 5. Create a new ride
+//POST a new ride
 router.post('/', createRide)
 
-// 6. Update ride
+
+//DELETE a ride
+router.delete('/:id', deleteRide)
+
+//UPDATE a ride
 router.patch('/:id', updateRide)
 
-// 7. Delete ride
-router.delete('/:id', deleteRide)
+// New route for logged-in user's rides
+router.get('/myrides', getMyRides);
 
 module.exports = router
