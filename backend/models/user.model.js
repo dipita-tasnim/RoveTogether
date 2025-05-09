@@ -28,6 +28,21 @@ const userSchema = new mongoose.Schema({
     },
     socketId: {
         type: String,
+    },
+    // Add emergency contact information
+    emergencyContact: {
+        name: {
+            type: String,
+            required: false
+        },
+        phone: {
+            type: String,
+            required: false
+        },
+        email: {
+            type: String,
+            required: false
+        }
     }
 })
 //password generation and encryption process
