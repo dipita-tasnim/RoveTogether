@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 
+
+
+
 const RideForm = () => {
     const navigate = useNavigate();
 
@@ -12,20 +15,10 @@ const RideForm = () => {
     const [preference, setPreference] = useState("");
     const [error, setError] = useState(null);
 
-
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-
-
-        const ride = {
-            startingPoint, 
-            destination, 
-            date, 
-            time, // Keep the original 24h time format
-            availableSlots, 
-            preference
-        }
+        const ride = {startingPoint, destination, date, time, availableSlots, preference}
         const token = localStorage.getItem("token");
         const response = await fetch('/api/rides', {
             method: 'POST',
@@ -74,47 +67,30 @@ const RideForm = () => {
             />    
             <label>Date:</label>
             <input
-                type="date"
+                type="text"
                 onChange={(e) => setDate(e.target.value)}
                 value={date}
             />
             <label>Time:</label>
             <input
-                type="time"
+                type="text"
                 onChange={(e) => setTime(e.target.value)}
                 value={time}
             />
-
             <label>Available Slots:</label>
             <input
                 type="text"
                 onChange={(e) => setAvailableSlots(e.target.value)}
                 value={availableSlots}
             />
-            {/* <label>Preference:</label> 
+            <label>Preference:</label>
             <input
                 type="text"
                 onChange={(e) => setPreference(e.target.value)}
                 value={preference}
-            /> */}
-
-            {/* update the preference to a dropdown for search bar */}
-            <label>Preference:</label>
-            <select 
-                className="search-field"
-                value={preference}
-                onChange={(e) => setPreference(e.target.value)}
-            >
-                <option value="">Preference</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="any">Any</option>
-            </select>
-
-            
+            />
             <button className="post-button">+ POST</button>
         </form>
-    )
-}
+)}
 
 export default RideForm

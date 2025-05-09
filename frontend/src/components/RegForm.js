@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Navigate } from "react-router-dom";  // <-- added Navigate
-import { useEffect } from 'react';
+
 
 const RegForm = () => {
     const navigate = useNavigate();

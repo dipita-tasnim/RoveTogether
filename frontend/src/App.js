@@ -9,6 +9,9 @@ import LoginForm from './components/LoginForm';
 import RegForm from './components/RegForm';
 import LandingPage from './components/LandingPage';
 import MyProfile from './pages/MyProfile';
+import UserProfile from './pages/UserProfile';
+import UserSearch from './components/UserSearch';
+import AdminDashboard from './pages/AdminDashboard';
 import Logout from './components/Logout';
 
 import './index.css';
@@ -23,7 +26,8 @@ function AppLayout() {
   return (
     <div className="main-container">
       {!shouldHideSidebar && <Sidebar />}
-      <div className="content-area">
+      <div className={`content-area ${!shouldHideSidebar ? 'with-sidebar' : ''}`}>
+
         <div className="pages">
           <Routes>
             <Route path="/" element={<Navigate to="/welcome" />} />
@@ -40,6 +44,9 @@ function AppLayout() {
             <Route path="/create" element={<RideForm />} />
             <Route path="/myrides" element={<MyRides />} />
             <Route path="/profile" element={<MyProfile />} />
+            <Route path="/search-users" element={<UserSearch />} />
+            <Route path="/user/:userId" element={<UserProfile />} />
+            <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/logout" element={<Logout />} />
             <Route path="*" element={<div>404 Page Not Found</div>} />
           </Routes>
