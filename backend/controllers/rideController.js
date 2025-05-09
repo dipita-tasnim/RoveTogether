@@ -3,6 +3,7 @@ const User = require('../models/user.model');
 const mongoose = require('mongoose');
 
 // Get all rides
+// Search ride
 const getRides = async (req, res) => {
   try {
     const { from, to, date, time, preference } = req.query;
