@@ -18,6 +18,7 @@ export default function Home() {
     const token = localStorage.getItem("token");
     if (!token) return;
 
+    // Handling search
     try {
       const formattedParams = {
         ...params,
