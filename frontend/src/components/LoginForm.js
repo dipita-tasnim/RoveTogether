@@ -5,13 +5,6 @@ import { useEffect } from 'react';
 const LoginForm = () => {
     const navigate = useNavigate();
 
-    // useEffect(() => {
-    //     const token = localStorage.getItem('token');
-    //     if (token) {
-    //       navigate('/home'); // redirect if already logged in
-    //     }
-    //   }, [navigate]);
-
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");

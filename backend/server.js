@@ -5,33 +5,23 @@ const mongoose = require('mongoose');
 const rideRoutes = require('./routes/rides');
 const app = require('./app');
 
-//connect to db
-mongoose.connect(process.env.MONGO_URI)
-.then(() => {
-    //listen for requests
-    app.listen(process.env.PORT, () => {
-        console.log('connected to db & listening on port', process.env.PORT)
-    })
-
-})
-.catch((error) => {
-    console.log(error)
-})
-
-
+// Middleware for logging requests
 app.use((req, res, next) => {
     console.log(req.path, req.method)
     next()
-})
+});
 
-//routes
-// app.get('/', (req, res) => {    [[NO NEED FROM EXPRESS ROUTER & API ROUTES PART]]
-//     res.json({mssg: 'Welcome to the app'})
-// })
-
-//routes
+// Routes
 app.use('/api/rides', rideRoutes);
 
-
-
-
+// Connect to database
+mongoose.connect(process.env.MONGO_URI)
+.then(() => {
+    // Listen for requests
+    app.listen(process.env.PORT, () => {
+        console.log('connected to db & listening on port', process.env.PORT)
+    })
+})
+.catch((error) => {
+    console.log(error)
+});

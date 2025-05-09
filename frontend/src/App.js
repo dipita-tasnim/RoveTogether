@@ -7,10 +7,10 @@ import RideForm from './components/RideForm';
 import MyRides from './pages/MyRides';
 import LoginForm from './components/LoginForm';
 import RegForm from './components/RegForm';
-import LandingPage from './components/LandingPage';
+import LandingPage from './pages/LandingPage';
 import MyProfile from './pages/MyProfile';
 import Logout from './components/Logout';
-
+import RideConfirmation from './pages/RideConfirmation';
 import './index.css';
 
 function AppLayout() {
@@ -23,7 +23,8 @@ function AppLayout() {
   return (
     <div className="main-container">
       {!shouldHideSidebar && <Sidebar />}
-      <div className="content-area">
+      <div className={`content-area ${!shouldHideSidebar ? 'with-sidebar' : ''}`}>
+
         <div className="pages">
           <Routes>
             <Route path="/" element={<Navigate to="/welcome" />} />
@@ -41,6 +42,7 @@ function AppLayout() {
             <Route path="/myrides" element={<MyRides />} />
             <Route path="/profile" element={<MyProfile />} />
             <Route path="/logout" element={<Logout />} />
+            <Route path="/ride-confirmation" element={<RideConfirmation />} />
             <Route path="*" element={<div>404 Page Not Found</div>} />
           </Routes>
         </div>

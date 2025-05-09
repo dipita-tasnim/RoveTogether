@@ -12,20 +12,33 @@ const RideForm = () => {
     const [preference, setPreference] = useState("");
     const [error, setError] = useState(null);
 
-
     const handleSubmit = async (e) => {
-        e.preventDefault()
+        e.preventDefault();
 
-
+        // Format date and time to match the format in the database
+        const formattedDate = date ? (() => {
+            const dateObj = new Date(date);
+            const day = dateObj.getDate();
+            const month = dateObj.toLocaleString('en-US', { month: 'long' });
+            const year = dateObj.getFullYear();
+            return `${day} ${month}, ${year}`;
+        })() : '';
+        
+        const formattedTime = time ? new Date(`1970-01-01T${time}`).toLocaleTimeString('en-US', {
+            hour: 'numeric',
+            minute: '2-digit',
+            hour12: true
+        }).toLowerCase().replace(':', '.') : '';
 
         const ride = {
             startingPoint, 
             destination, 
-            date, 
-            time, // Keep the original 24h time format
+            date: formattedDate, 
+            time: formattedTime, 
             availableSlots, 
             preference
-        }
+        };
+
         const token = localStorage.getItem("token");
         const response = await fetch('/api/rides', {
             method: 'POST',
@@ -35,23 +48,22 @@ const RideForm = () => {
                 'Authorization': `Bearer ${token}`
             }
         });
-        const json = await response.json()
+        const json = await response.json();
 
         if (!response.ok) {
-            setError(json.error) //controller file has error property
+            setError(json.error);
         }
-        if (response.ok){
-            setStartingPoint('')
-            setDestination('')
-            setDate('')
-            setTime('')
-            setAvailableSlots('')
-            setPreference('')
-            setError(null)
-            console.log('New Ride added', json)
-            navigate('/home')
+        if (response.ok) {
+            setStartingPoint('');
+            setDestination('');
+            setDate('');
+            setTime('');
+            setAvailableSlots('');
+            setPreference('');
+            setError(null);
+            navigate('/home');
         }
-    }
+    };
 
     return (
         <form className="create" onSubmit={handleSubmit}>
@@ -91,14 +103,7 @@ const RideForm = () => {
                 onChange={(e) => setAvailableSlots(e.target.value)}
                 value={availableSlots}
             />
-            {/* <label>Preference:</label> 
-            <input
-                type="text"
-                onChange={(e) => setPreference(e.target.value)}
-                value={preference}
-            /> */}
 
-            {/* update the preference to a dropdown for search bar */}
             <label>Preference:</label>
             <select 
                 className="search-field"
@@ -110,11 +115,10 @@ const RideForm = () => {
                 <option value="female">Female</option>
                 <option value="any">Any</option>
             </select>
-
             
             <button className="post-button">+ POST</button>
         </form>
-    )
-}
+    );
+};
 
-export default RideForm
+export default RideForm;

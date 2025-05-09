@@ -4,7 +4,7 @@ const { body } = require("express-validator");
 const userController = require('../controllers/user.controller');
 const authMiddleware = require('../middlewares/auth.middleware');
 
-// ✅ Keep only this one
+// Keep only this one
 router.post('/register', [
     body('email').isEmail().withMessage('Invalid Email'),
     body('firstname').isLength({ min: 3 }).withMessage('First name must be at least 3 character'),
@@ -23,10 +23,20 @@ router.post(
     userController.loginUser
 );
 
+// get all users
+router.get('/', authMiddleware.authUser, userController.getAllUsers);
+
+
 // profile route
 router.get('/profile', authMiddleware.authUser, userController.getUserProfile);
 
+// Fetch user by ID
+router.get('/:id', authMiddleware.authUser, userController.getUserById);
+
 // logout route
 router.get('/logout', authMiddleware.authUser, userController.logoutUser);
+
+//Delete a user
+router.delete('/:id', authMiddleware.authUser, userController.deleteUser);
 
 module.exports = router;
