@@ -19,11 +19,6 @@ export default function Home() {
     if (!token) return;
 
     try {
-      // Log the raw input date and time
-      console.log('Raw input date:', params.date);
-      console.log('Raw input time:', params.time);
-
-      // Format date and time to match the format in the database
       const formattedParams = {
         ...params,
         date: params.date ? (() => {
@@ -43,12 +38,7 @@ export default function Home() {
         })() : ''
       };
 
-      // Log the formatted parameters
-      console.log('Formatted search params:', formattedParams);
-
       const queryString = new URLSearchParams(formattedParams).toString();
-      console.log('Query string:', queryString);
-
       const response = await fetch(`/api/rides?${queryString}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -57,17 +47,11 @@ export default function Home() {
       });
 
       const json = await response.json();
-
       if (response.ok) {
-        // Log all rides from response
-        console.log('All rides from response:', json.map(ride => ({
-          date: ride.date,
-          time: ride.time
-        })));
         setRides(json);
       }
     } catch (err) {
-      console.error("Fetch error:", err);
+      console.error("Error fetching rides:", err);
     }
   };
 
@@ -77,7 +61,6 @@ export default function Home() {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    console.log('Search params before formatting:', searchParams);
     fetchRides(searchParams);
   };
 

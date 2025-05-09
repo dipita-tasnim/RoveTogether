@@ -8,9 +8,6 @@ const getRides = async (req, res) => {
     const { from, to, date, time, preference } = req.query;
     const query = {};
 
-    // Log the incoming search parameters
-    console.log('Raw search params:', { from, to, date, time, preference });
-
     // Use regex for text-based fields
     if (from) query.startingPoint = { $regex: from, $options: 'i' };
     if (to) query.destination = { $regex: to, $options: 'i' };
@@ -29,7 +26,6 @@ const getRides = async (req, res) => {
         // For Male or Female, use exact case-insensitive match
         query.preference = { $regex: `^${preference}$`, $options: 'i' };
       }
-      console.log('Preference being searched:', preference);
     }
 
     // Handle date format variations
@@ -41,50 +37,20 @@ const getRides = async (req, res) => {
       // Create a regex pattern that matches the day and month but is flexible with the year
       const datePattern = new RegExp(`^${day} ${month}, \\d{4}$`, 'i');
       query.date = datePattern;
-      
-      console.log('Date pattern being searched:', datePattern);
     }
 
     // Handle time format variations
     if (time) {
       // Use direct matching for time since it's already in the correct format
       query.time = time;
-      console.log('Time being searched:', time);
     }
 
-    // Log the constructed query
-    console.log('MongoDB query:', JSON.stringify(query, null, 2));
-
-    // First, get all rides to see what's in the database
-    const allRides = await Ride.find({})
-      .populate('user_id', 'fullname.firstname fullname.lastname email')
-      .sort({ createdAt: -1 });
-
-    console.log('Sample of rides in database:', allRides.slice(0, 3).map(ride => ({
-      date: ride.date,
-      time: ride.time,
-      from: ride.startingPoint,
-      to: ride.destination,
-      preference: ride.preference
-    })));
-
-    // Then get the filtered rides
     const rides = await Ride.find(query)
       .populate('user_id', 'fullname.firstname fullname.lastname email')
       .sort({ createdAt: -1 });
 
-    // Log the search results
-    console.log('Search results:', rides.map(ride => ({
-      date: ride.date,
-      time: ride.time,
-      from: ride.startingPoint,
-      to: ride.destination,
-      preference: ride.preference
-    })));
-
     res.status(200).json(rides);
   } catch (error) {
-    console.error('Search error:', error);
     res.status(500).json({ message: 'Failed to fetch rides' });
   }
 };
@@ -117,8 +83,7 @@ const getRide = async (req, res) => {
   }
 };
 
-
-// Get rides created by the logged-in user (with populated creator & joined users)
+// Get rides created by the logged-in user
 const getMyRides = async (req, res) => {
   try {
     const userId = req.user._id;
