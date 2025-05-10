@@ -1,22 +1,20 @@
-// const RideDetails = ({ride}) => {
-//     return (
-//         <div className="ride-details">
-//             <p className="ride-startingPoint"><strong>From:</strong> {ride.startingPoint}</p>
-//             <p className="ride-destination"><strong>To:</strong> {ride.destination}</p>
-//             <p className="ride-date"><strong>Date:</strong> {ride.date}</p>
-//             <p className="ride-time"><strong>Time:</strong> {ride.time}</p>
-//         </div>
-//     )
-// }   
-
-// export default RideDetails
-
-
-
 import { useState } from "react";
 
 const RideDetails = ({ ride }) => {
   const [activeStatus, setActiveStatus] = useState("open"); // "" | "open" | "closed"
+
+  // Helper function to convert 24h time to 12h format
+  const formatTimeTo12Hour = (time24h) => {
+    if (!time24h) return "";
+    
+    const [hours, minutes] = time24h.split(':');
+    const hour = parseInt(hours, 10);
+    
+    const ampm = hour >= 12 ? 'PM' : 'AM';
+    const hour12 = hour % 12 || 12; // Convert 0 to 12
+    
+    return `${hour12}:${minutes} ${ampm}`;
+  };
 
   const handleOpenClick = () => {
     setActiveStatus("open");
@@ -48,7 +46,7 @@ const RideDetails = ({ ride }) => {
         <div className="ride-thin-divider" />
         <div className="ride-detail-block">
           <span className="detail-title">Time</span>
-          <span>{ride.time}</span>
+          <span>{formatTimeTo12Hour(ride.time)}</span>
         </div>
         <div className="ride-thin-divider" />
         <div className="ride-detail-block">
@@ -90,5 +88,4 @@ const RideDetails = ({ ride }) => {
 
 export default RideDetails;
 
-  
-  
+
