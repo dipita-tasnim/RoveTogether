@@ -34,7 +34,7 @@ const MyProfile = () => {
       <h2>My Profile</h2>
       {error && <p>{error}</p>}
       {user && (
-        <div className="user-card">
+        <div className="user-card3">
           <p><strong>Full Name:</strong> {user.fullname.firstname} {user.fullname.lastname}</p>
           <p><strong>Email:</strong> {user.email}</p>
         </div>

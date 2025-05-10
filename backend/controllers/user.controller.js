@@ -121,32 +121,52 @@ exports.getAllUsers = async (req, res) => {
     }
 };
 
-// user.controller.js
-
-// Fetch user by ID (for profile viewing)
-module.exports.getUserById = async (req, res) => {
+// Search users by name
+exports.searchUsers = async (req, res) => {
     try {
-      const userId = req.params.id;  // Get the user ID from the URL parameter
-  
-      // Check if the user ID is valid
-      if (!mongoose.Types.ObjectId.isValid(userId)) {
-        return res.status(400).json({ message: "Invalid user ID" });
-      }
-  
-      // Find the user by ID, excluding the password field for security
-      const user = await userModel.findById(userId).select("-password");
-  
-      if (!user) {
-        return res.status(404).json({ message: "User not found" });
-      }
-  
-      res.status(200).json(user);  // Return the user data
-    } catch (err) {
-      console.error("Error fetching user by ID:", err);
-      res.status(500).json({ message: "Server error, please try again later." });
+        const { query } = req.query;
+        
+        if (!query) {
+            return res.status(400).json({ message: "Search query is required" });
+        }
+
+        // Search by first name or last name
+        const users = await userModel.find({
+            $or: [
+                { 'fullname.firstname': { $regex: query, $options: 'i' } },
+                { 'fullname.lastname': { $regex: query, $options: 'i' } },
+                { 'email': { $regex: query, $options: 'i' } }
+            ]
+        }).select('-password');
+
+        res.status(200).json(users);
+    } catch (error) {
+        res.status(500).json({ 
+            message: "Failed to search users", 
+            error: error.message 
+        });
     }
-  };
-  
+};
+
+exports.getUserById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(404).json({ error: 'Invalid user ID' });
+        }
+        
+        const user = await userModel.findById(id).select('-password');
+        
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+        
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(500).json({ message: "Failed to fetch user profile", error: error.message });
+    }
+};
 
 //Delete users [with all his rides also]
 

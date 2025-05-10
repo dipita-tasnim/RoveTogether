@@ -92,7 +92,7 @@ const RideConfirmation = () => {
             const isRideOwner = String(userId) === String(ridePostedBy);
 
             return (
-              <div className="user-card" key={userId}>
+              <div className="user-card2" key={userId}>
                 {isRideOwner && <span className="owner-tag">Ride Owner</span>}
                 <p><strong>Full Name:</strong> {user.fullname?.firstname} {user.fullname?.lastname}</p>
                 <p><strong>Email:</strong> {user.email}</p>

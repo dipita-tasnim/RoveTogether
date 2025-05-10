@@ -26,6 +26,8 @@ router.post(
 // get all users
 router.get('/', authMiddleware.authUser, userController.getAllUsers);
 
+// search users - must be before /:id route
+router.get('/search', authMiddleware.authUser, userController.searchUsers);
 
 // profile route
 router.get('/profile', authMiddleware.authUser, userController.getUserProfile);
@@ -35,6 +37,9 @@ router.get('/:id', authMiddleware.authUser, userController.getUserById);
 
 // logout route
 router.get('/logout', authMiddleware.authUser, userController.logoutUser);
+
+// get a specific user by ID - must be after all specific routes
+router.get('/:id', authMiddleware.authUser, userController.getUserById);
 
 //Delete a user
 router.delete('/:id', authMiddleware.authUser, userController.deleteUser);
