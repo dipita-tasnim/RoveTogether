@@ -1,4 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { AuthProvider } from './contexts/AuthContext';
+import MessageSystem from './components/MessageSystem';
 
 // Pages & Components
 import Home from './pages/Home';
@@ -21,7 +23,7 @@ function AppLayout() {
   const hideSidebarRoutes = ["/welcome", "/login", "/registration"];
   const shouldHideSidebar = hideSidebarRoutes.includes(location.pathname);
 
-  const isLoggedIn = !!localStorage.getItem('user');
+  const isLoggedIn = !!localStorage.getItem('token');
 
   return (
     <div className="main-container">
@@ -48,6 +50,7 @@ function AppLayout() {
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/logout" element={<Logout />} />
             <Route path="/ride-confirmation" element={<RideConfirmation />} />
+            <Route path="/messages" element={<MessageSystem />} />
             <Route path="*" element={<div>404 Page Not Found</div>} />
           </Routes>
         </div>
@@ -58,11 +61,11 @@ function AppLayout() {
 
 function App() {
   return (
-    <div className="App">
+    <AuthProvider>
       <BrowserRouter>
         <AppLayout />
       </BrowserRouter>
-    </div>
+    </AuthProvider>
   );
 }
 

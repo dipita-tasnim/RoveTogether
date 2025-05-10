@@ -63,6 +63,7 @@ const Sidebar = () => {
           <Link to="/myrides" className="sidebar-link">My Rides</Link>
           <Link to="/search-users" className="sidebar-link">Find & Rate Users</Link>
           <Link to="/profile" className="sidebar-link">Profile</Link>
+          <Link to="/messages" className="sidebar-link">Messages</Link>
           {isAdmin && (
             <Link to="/admin" className="sidebar-link admin-link">Admin Dashboard</Link>
           )}

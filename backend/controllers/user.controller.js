@@ -63,24 +63,31 @@ module.exports.loginUser = async (req, res) => {
         }
 
         const { email, password } = req.body;
+        
+        // Find user and explicitly select password field
         const user = await userModel.findOne({ email }).select("+password");
 
         if (!user) {
             return res.status(401).json({ message: "Invalid email or password" });
         }
 
+        // Compare password
         const isMatch = await user.comparePassword(password);
         if (!isMatch) {
             return res.status(401).json({ message: "Invalid email or password" });
         }
 
+        // Generate token
         const token = user.generateAuthToken();
-        res.status(201).json({
+
+        // Send response
+        res.status(200).json({
             token,
             user: {
                 _id: user._id,
                 email: user.email,
-                fullname: user.fullname, // or extract firstname: user.fullname.firstname if you want directly
+                fullname: user.fullname,
+                role: user.role
             }
         });
 
@@ -187,4 +194,12 @@ exports.deleteUser = async (req, res) => {
     await Ride.deleteMany({ user_id: id });
 
     res.status(200).json({ message: "User and their rides deleted successfully" });
+};
+exports.getAdmins = async (req, res) => {
+    try {
+        const admins = await User.find({ role: 'admin' }).select('name email');
+        res.status(200).json({ success: true, admins });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
 };

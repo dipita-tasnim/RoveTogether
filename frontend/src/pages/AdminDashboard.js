@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
+import AdminMessageSystem from '../components/AdminMessageSystem';
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('users');
@@ -170,6 +171,12 @@ const AdminDashboard = () => {
         >
           Ratings
         </button>
+        <button 
+          className={`tab-button ${activeTab === 'messages' ? 'active' : ''}`}
+          onClick={() => setActiveTab('messages')}
+        >
+          Messages
+        </button>
       </div>
 
       {activeTab === 'users' && (
@@ -251,6 +258,13 @@ const AdminDashboard = () => {
               ))}
             </tbody>
           </table>
+        </div>
+      )}
+
+      {activeTab === 'messages' && (
+        <div className="messages-panel">
+          <h2>Manage Messages</h2>
+          <AdminMessageSystem />
         </div>
       )}
     </div>

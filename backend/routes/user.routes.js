@@ -43,5 +43,6 @@ router.get('/:id', authMiddleware.authUser, userController.getUserById);
 
 //Delete a user
 router.delete('/:id', authMiddleware.authUser, userController.deleteUser);
+router.get('/admins', authMiddleware.authUser, userController.getAdmins);
 
 module.exports = router;
