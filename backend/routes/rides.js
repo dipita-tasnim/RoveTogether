@@ -6,7 +6,7 @@ const {
   deleteRide,
   updateRide,
   getMyRides,
-  updateRideStatus, //  Import this from controller
+  updateRideStatus, 
   joinRide,
   updateJoinedUserStatus
 } = require('../controllers/rideController');

@@ -416,12 +416,12 @@ select {
 }
 
 .status-button.active-open {
-  background-color: #22c55e; /* green */
+  background-color: #22c55e; 
   color: white;
 }
 
 .status-button.active-closed {
-  background-color: #ef4444; /* red */
+  background-color: #ef4444; 
   color: white;
 }
 
