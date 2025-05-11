@@ -4,30 +4,55 @@ import { useNavigate } from "react-router-dom";
 const RideDetails = ({ ride }) => {
   const isOpen = ride.status === "open";
   const navigate = useNavigate();
-  const joinedUsersKey = `joinedUsers_${ride._id}`;
   const [isJoined, setIsJoined] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (!token) return;
+    if (!token) {
+      setIsJoined(false);
+      return;
+    }
     
-    const user = JSON.parse(atob(token.split(".")[1]));
-    const joinedUsers = JSON.parse(localStorage.getItem(joinedUsersKey)) || [];
-    setIsJoined(joinedUsers.includes(user._id));
-  }, [joinedUsersKey]);
+    try {
+      const user = JSON.parse(atob(token.split(".")[1]));
+      // Check if user is in joinedUserIds array by comparing user IDs
+      const isUserJoined = ride.joinedUserIds?.some(
+        (entry) => entry.user._id === user._id || entry.user === user._id
+      );
+      setIsJoined(isUserJoined);
+    } catch (error) {
+      console.error("Error checking join status:", error);
+      setIsJoined(false);
+    }
+  }, [ride.joinedUserIds]);
 
-  const toggleJoin = () => {
+  const toggleJoin = async () => {
     const token = localStorage.getItem("token");
     if (!token) return;
     
-    const user = JSON.parse(atob(token.split(".")[1]));
-    const existingJoined = JSON.parse(localStorage.getItem(joinedUsersKey)) || [];
-    const updatedJoined = isJoined 
-      ? existingJoined.filter((id) => id !== user._id)
-      : [...new Set([...existingJoined, user._id])];
-    
-    setIsJoined(!isJoined);
-    localStorage.setItem(joinedUsersKey, JSON.stringify(updatedJoined));
+    try {
+      const response = await fetch(`/api/rides/${ride._id}/join`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to join/leave ride');
+      }
+
+      const data = await response.json();
+      setIsJoined(!isJoined);
+      
+      // Refresh the page to update the ride data
+      window.location.reload();
+    } catch (error) {
+      console.error('Error joining/leaving ride:', error);
+      alert(error.message);
+    }
   };
 
   const handleProfileClick = () => {

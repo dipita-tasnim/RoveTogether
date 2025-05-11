@@ -349,11 +349,17 @@ select {
   font-size: 1.5rem;
   margin-bottom: 0.5rem;
   cursor: pointer;
-  transition: transform 0.2s ease;
+  transition: all 0.2s ease;
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  color: inherit;
+  border-radius: 50%;
 }
 
 .join-icon:hover {
   transform: scale(1.2);
+  background: #E5E7EB;
 }
 
 
@@ -404,6 +410,11 @@ select {
   transition: all 0.3s ease;
 }
 
+.status-button:hover:not(.active-open):not(.active-closed) {
+  background-color: #E5E7EB;
+  border-color: #E5E7EB;
+}
+
 .status-button.active-open {
   background-color: #22c55e; /* green */
   color: white;
@@ -421,6 +432,14 @@ select {
   cursor: pointer;
   font-weight: 500;
   text-decoration: underline;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.view-details-button:hover {
+  background-color: #E5E7EB;
+  text-decoration: none;
 }
 
 /* form */

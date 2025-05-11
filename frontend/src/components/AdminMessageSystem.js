@@ -97,15 +97,17 @@ const AdminMessageSystem = () => {
                     messages.map(message => (
                         <div 
                             key={message._id} 
-                            className={`message ${message.sender._id === userId ? 'sent' : 'received'}`}
+                            className={`message ${message.sender?._id === userId ? 'sent' : 'received'}`}
                         >
                             <div className="message-header">
-                                <span>From: {message.sender.fullname.firstname} {message.sender.fullname.lastname}</span>
+                                <span>
+                                    From: {message.sender?.fullname?.firstname || 'Unknown'} {message.sender?.fullname?.lastname || ''}
+                                </span>
                                 <span>{new Date(message.createdAt).toLocaleString()}</span>
                             </div>
                             <div className="message-content">{message.content}</div>
                             <div className="message-actions">
-                                {!message.isRead && message.receiver._id === userId && (
+                                {!message.isRead && message.receiver?._id === userId && (
                                     <button 
                                         className="mark-read-button"
                                         onClick={() => markAsRead(message._id)}
@@ -113,10 +115,10 @@ const AdminMessageSystem = () => {
                                         Mark as Read
                                     </button>
                                 )}
-                                {message.sender._id !== userId && (
+                                {message.sender?._id !== userId && (
                                     <button 
                                         className="reply-button"
-                                        onClick={() => setSelectedUser(message.sender._id)}
+                                        onClick={() => setSelectedUser(message.sender?._id)}
                                     >
                                         Reply
                                     </button>

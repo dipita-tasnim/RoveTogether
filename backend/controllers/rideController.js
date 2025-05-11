@@ -205,8 +205,10 @@ const joinRide = async (req, res) => {
     );
     
     if (existingJoinIndex !== -1) {
+      // User is leaving the ride
       ride.joinedUserIds.splice(existingJoinIndex, 1);
     } else {
+      // User is joining the ride
       ride.joinedUserIds.push({ 
         user: userId, 
         status: "pending" 
@@ -214,10 +216,10 @@ const joinRide = async (req, res) => {
     }
 
     // Save the ride
-    const saved = await ride.save();
+    const savedRide = await ride.save();
 
     // Populate the user data before sending response
-    const populatedRide = await Ride.findById(saved._id)
+    const populatedRide = await Ride.findById(savedRide._id)
       .populate('user_id', 'fullname email')
       .populate({
         path: 'joinedUserIds.user',
@@ -229,6 +231,7 @@ const joinRide = async (req, res) => {
       ride: populatedRide 
     });
   } catch (err) {
+    console.error('Join ride error:', err);
     res.status(500).json({ message: "Server error" });
   }
 };
